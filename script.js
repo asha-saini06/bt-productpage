@@ -13,6 +13,8 @@ const buyNowBtn = document.getElementById('buyNow');
 const relatedProductsContainer = document.querySelector('.related-products-grid');
 const scrollLeftBtn = document.querySelector('.scroll-left');
 const scrollRightBtn = document.querySelector('.scroll-right');
+const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+const mobileMenu = document.querySelector('.mobile-menu');
 
 // Related products data
 const relatedProducts = [
@@ -89,6 +91,21 @@ function initRelatedProducts() {
     });
 }
 
+// Mobile Menu Toggle
+function toggleMobileMenu() {
+    if (!mobileMenu || !mobileMenuBtn) return;
+    
+    const isOpen = mobileMenu.classList.contains('active');
+    
+    if (isOpen) {
+        mobileMenu.classList.remove('active');
+        mobileMenuBtn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
+    } else {
+        mobileMenu.classList.add('active');
+        mobileMenuBtn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+    }
+}
+
 // Size Chart Modal
 function toggleModal() {
     sizeChartModal.classList.toggle('active');
@@ -139,6 +156,11 @@ function scrollProducts(direction) {
 document.addEventListener('DOMContentLoaded', () => {
     initRelatedProducts();
     
+    // Mobile menu
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    }
+    
     sizeChartBtn.addEventListener('click', toggleModal);
     modalClose.addEventListener('click', toggleModal);
     sizeChartModal.addEventListener('click', (e) => {
@@ -161,8 +183,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     wishlistBtn.addEventListener('click', toggleWishlist);
     
-    scrollLeftBtn?.addEventListener('click', () => scrollProducts('left'));
-    scrollRightBtn?.addEventListener('click', () => scrollProducts('right'));
+    if (scrollLeftBtn) {
+        scrollLeftBtn.addEventListener('click', () => scrollProducts('left'));
+    }
+    if (scrollRightBtn) {
+        scrollRightBtn.addEventListener('click', () => scrollProducts('right'));
+    }
     
     addToCartBtn.addEventListener('click', () => {
         const selectedSize = document.querySelector('.size-btn.active').dataset.size;
